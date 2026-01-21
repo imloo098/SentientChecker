@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentient Airdrop Checker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div class="logo-wrapper">
+                <img src="https://pbs.twimg.com/profile_images/1854575835555930112/iacpKDQc_400x400.jpg" 
+                     alt="Sentient Logo" 
+                     class="logo"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="logo-fallback">S</div>
+            </div>
+            <h1>
+                <span class="gradient-text">Sentient</span> Airdrop Checker
+            </h1>
+            <p class="subtitle">Check your $SENT allocation</p>
+        </div>
+
+        <div class="card instructions-card">
+            <div class="card-header">
+                <span class="icon">📋</span>
+                <h2>How to Check Your Allocation</h2>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <p>Enter your EVM wallet address in the field below</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <p>Click the "Check Allocation" button</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <p>View your airdrop eligibility status instantly</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card checker-card">
+            <div class="input-wrapper">
+                <input type="text" 
+                       id="walletInput" 
+                       placeholder="Enter your EVM address (0x...)" 
+                       maxlength="42"
+                       spellcheck="false">
+                <button onclick="checkAllocation()" class="check-btn">
+                    <span>Check Allocation</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="info-banner">
+            <span class="info-icon">ℹ️</span>
+            <p><strong>Important:</strong> Only addresses that interacted with Sentient AI ecosystem are eligible.</p>
+        </div>
+
+        <div class="footer">
+            <p>Created by <a href="https://x.com/k2sbhai" target="_blank">K2S.ink (@k2sbhai)</a></p>
+        </div>
+    </div>
+
+    <div class="modal" id="resultModal">
+        <div class="modal-backdrop" onclick="closeModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>😴 NOT ELIGIBLE 😴</h2>
+            </div>
+            <div class="modal-body">
+                <div class="meme-container">
+                    <img src="https://i.imgflip.com/4/1bgw.jpg" alt="Pepe Clown">
+                </div>
+                <h3>🤡 GO SLEEP ANON 🤡</h3>
+                <p>Better luck next time!</p>
+            </div>
+            <button class="close-btn" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        function checkAllocation() {
+            const input = document.getElementById('walletInput');
+            const address = input.value.trim();
+            
+            if (!address) {
+                showNotification('Please enter a wallet address!');
+                return;
+            }
+            
+            if (!address.startsWith('0x') || address.length !== 42) {
+                showNotification('Please enter a valid EVM address!');
+                return;
+            }
+            
+            setTimeout(() => {
+                document.getElementById('resultModal').classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }, 500);
+        }
+
+        function closeModal() {
+            document.getElementById('resultModal').classList.remove('active');
+            document.getElementById('walletInput').value = '';
+            document.body.style.overflow = 'auto';
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.classList.add('show'), 10);
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        document.getElementById('walletInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAllocation();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
